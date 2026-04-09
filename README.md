@@ -1,5 +1,9 @@
 # StreamDyCoke
 
+[![ci](https://github.com/anantteotia/StreamDyCoke/actions/workflows/ci.yml/badge.svg)](https://github.com/anantteotia/StreamDyCoke/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+
 **Dynamic Token Compression for Streaming and Real-Time Video Large Language Models**
 
 StreamDyCoke is a streaming-friendly extension of [DyCoke (CVPR 2025)](https://arxiv.org/abs/2411.15024), the dynamic token-pruning method for Video LLMs. DyCoke gives strong speed/memory wins on offline video benchmarks but assumes the entire video is available before inference begins. StreamDyCoke removes that assumption so the same family of techniques can be used in **live, frame-by-frame** settings: assistive vision, robot perception, AR glasses, surveillance, tele-operation, and live commentary.
@@ -19,12 +23,18 @@ streamdycoke/         core algorithm modules (PyTorch)
   ttm.py              causal sliding-window temporal token merging
   dp_cache.py         bounded dynamic-pruning cache + eviction policies
   streaming.py        streaming inference loop / anytime answering
+  benchmark.py        sweep harness with policy-sensitive metrics
+  viz.py              matplotlib plot helpers
   config.py           dataclass configs
   utils.py            shared helpers
-tests/                pytest unit tests (run without a GPU or LLM)
-scripts/              end-to-end runners (require GPU + Video LLM)
-docs/                 architecture notes and design decisions
-experiments/          configs and result logs
+tests/                pytest unit tests (21 passing, <1s on CPU)
+scripts/              runners
+  synthetic_demo.py            end-to-end demo on synthetic stream
+  run_synthetic_benchmark.py   eviction-policy ablation + plots
+  reproduce_dycoke.py          (placeholder) needs GPU + Video LLM
+  benchmark_streaming.py       (placeholder) needs GPU + Ego4D
+docs/ARCHITECTURE.md  design doc
+experiments/          benchmark output (gitignored)
 ```
 
 ## Status
@@ -33,13 +43,26 @@ This is an active course project (Spring 2026, ITCS 6010/8010, UNC Charlotte). T
 
 | Milestone | Status |
 |---|---|
-| Causal sliding-window TTM | in progress |
-| Bounded DP cache (3 eviction policies) | in progress |
-| Streaming inference loop | in progress |
-| Unit tests on synthetic tensors | in progress |
+| Causal sliding-window TTM | done |
+| Bounded DP cache (3 eviction policies) | done |
+| Streaming inference loop | done |
+| Synthetic benchmark + ablation infrastructure | done |
+| Unit tests (21 passing on CPU, sub-second) | done |
 | DyCoke baseline reproduction (LLaVA-OneVision-7B) | planned |
 | Streaming evaluation on Ego4D-QA | planned |
-| Ablations and final report | planned |
+| Ablations on real attention + final report | planned |
+
+## Preliminary results (synthetic streams)
+
+The bounded DP cache supports three eviction policies. On a 32-frame synthetic stream with non-uniform per-token attention scores (capacity 64, active capacity 24, refresh top-6 every 4 frames, mean over 3 seeds):
+
+| Policy | DP mean attention | DP mean age (frames) | TTM reduction |
+|---|---:|---:|---:|
+| FIFO  | 0.50 | 2.65 | 0.74 |
+| LRR   | 0.50 | 2.65 | 0.74 |
+| **DECAY** | **0.83** | **5.25** | 0.74 |
+
+The attention-aware **DECAY** policy retains 66% higher-attention tokens in the DP cache pool than FIFO/LRR while keeping them around twice as long. Insert/evict counts are workload-driven and identical across policies; the *quality* of what each policy retains is what differs. Real-data validation against a Video LLM is the next milestone.
 
 ## Quickstart (algorithm-only, no GPU)
 
