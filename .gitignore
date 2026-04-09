@@ -1,0 +1,63 @@
+# --- Proposal (private, not for public repo) ---
+proposal/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# --- Virtual envs ---
+venv/
+env/
+.venv/
+.env
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# --- Experiments / artifacts ---
+checkpoints/
+*.pt
+*.pth
+*.bin
+*.safetensors
+runs/
+wandb/
+mlruns/
+logs/
+*.log
+
+# --- Datasets (never commit) ---
+data/
+datasets/
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# --- Local outputs ---
+outputs/
+results/
+tmp/
+scratch/
+
+# --- Jupyter ---
+.ipynb_checkpoints/

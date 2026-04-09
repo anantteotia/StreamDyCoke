@@ -1,0 +1,14 @@
+# Core algorithm modules — minimal deps so tests run without a GPU.
+torch>=2.1
+numpy>=1.24
+
+# Dev / test
+pytest>=7.4
+pytest-cov>=4.1
+
+# Later (uncomment when integrating with a real Video LLM):
+# transformers>=4.45
+# accelerate>=0.30
+# pillow>=10.0
+# decord>=0.6.0
+# av>=12.0
