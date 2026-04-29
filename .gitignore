@@ -34,6 +34,7 @@ env/
 Thumbs.db
 
 # --- Experiments / artifacts ---
+experiments/
 checkpoints/
 *.pt
 *.pth
