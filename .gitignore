@@ -1,6 +1,9 @@
 # --- Proposal (private, not for public repo) ---
 proposal/
 
+# Course final report (keep locally; do not publish on public GitHub)
+docs/FINAL_REPORT.md
+
 # --- Python ---
 __pycache__/
 *.py[cod]

@@ -50,7 +50,7 @@ This is an active course project (Spring 2026, ITCS 6010/8010, UNC Charlotte). T
 | Unit tests (21 passing on CPU, sub-second) | done |
 | DyCoke baseline reproduction (LLaVA-OneVision-7B) | done (scripts + measured scaling artifacts locally; outputs gitignored) |
 | Streaming evaluation on Ego4D-QA | planned |
-| Course final report (written summary of approach + experiments + limitations) | done (`docs/FINAL_REPORT.md`) |
+| Course final report (written summary of approach + experiments + limitations) | done locally (not tracked in this public repo) |
 | Ablations on real attention (Video LLM hooks + dataset numbers) | planned |
 
 ## Preliminary results (synthetic streams)
