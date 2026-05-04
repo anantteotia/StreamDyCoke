@@ -3,6 +3,7 @@ proposal/
 
 # Course final report (keep locally; do not publish on public GitHub)
 docs/FINAL_REPORT.md
+docs/FINAL_REPORT_CANVAS.txt
 
 # --- Python ---
 __pycache__/
