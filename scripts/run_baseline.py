@@ -21,13 +21,13 @@ from transformers import LlavaOnevisionForConditionalGeneration, AutoProcessor, 
 from PIL import Image
 import numpy as np
 
-# ── Config ────────────────────────────────────────────────────────────────────
+# Config
 MODEL_ID = "llava-hf/llava-onevision-qwen2-7b-ov-hf"
-QUANTIZE  = True          # int4 via bitsandbytes — fits on 16 GB VRAM
+QUANTIZE  = True          # int4 via bitsandbytes (fits on 16 GB VRAM)
 DEVICE    = "cuda" if torch.cuda.is_available() else "cpu"
 N_FRAMES  = 8             # number of synthetic frames to test with
 
-# ── Load ──────────────────────────────────────────────────────────────────────
+# Load
 print(f"Device : {DEVICE}")
 if DEVICE == "cuda":
     print(f"GPU    : {torch.cuda.get_device_name(0)}")
@@ -57,7 +57,7 @@ print(f"Loaded  in {load_time:.1f}s")
 if DEVICE == "cuda":
     print(f"VRAM used after load: {torch.cuda.memory_allocated()/1e9:.2f} GB")
 
-# ── Synthetic frames ──────────────────────────────────────────────────────────
+# Synthetic frames
 # RGB frames, 336x336 (LLaVA-OV default patch size).
 # We generate a slow-drift sequence so temporal redundancy is realistic.
 rng = np.random.default_rng(42)
@@ -70,7 +70,7 @@ for i in range(N_FRAMES):
 
 print(f"\nSynthetic stream: {N_FRAMES} frames, 336×336 RGB, slow drift")
 
-# ── Build prompt ──────────────────────────────────────────────────────────────
+# Build prompt
 conversation = [
     {
         "role": "user",
@@ -82,7 +82,7 @@ conversation = [
 ]
 prompt = processor.apply_chat_template(conversation, add_generation_prompt=True)
 
-# ── Tokenise ──────────────────────────────────────────────────────────────────
+# Tokenise
 inputs = processor(
     text=prompt,
     videos=[frames],
@@ -100,7 +100,7 @@ n_total_tokens = ids.shape[-1]
 print(f"Visual tokens (video placeholder) : {n_video}")
 print(f"Visual tokens (image placeholder) : {n_image}")
 print(f"Total input tokens                : {n_total_tokens}")
-# Count pixel_values shape — gives true visual-feature count going into the LLM
+# Count pixel_values shape (visual feature tensor shape going into the LLM)
 if "pixel_values_videos" in inputs:
     pv = inputs["pixel_values_videos"]
     print(f"pixel_values_videos shape         : {tuple(pv.shape)}")
@@ -108,7 +108,7 @@ elif "pixel_values" in inputs:
     pv = inputs["pixel_values"]
     print(f"pixel_values shape                : {tuple(pv.shape)}")
 
-# ── Inference ─────────────────────────────────────────────────────────────────
+# Inference
 if DEVICE == "cuda":
     torch.cuda.reset_peak_memory_stats()
 

@@ -12,9 +12,9 @@ StreamDyCoke is a streaming-friendly extension of [DyCoke (CVPR 2025)](https://a
 
 | Component | DyCoke (offline) | StreamDyCoke (this repo) |
 |---|---|---|
-| Temporal token merging | Symmetric 4-frame window, needs future frames | **Causal sliding-window TTM** — merges only against past frames |
+| Temporal token merging | Symmetric 4-frame window, needs future frames | **Causal sliding-window TTM** merges only against past frames |
 | Dynamic Pruning (DP) cache | Unbounded, grows with video length | **Bounded DP cache** with three eviction policies (FIFO / LRR / attention-decay) |
-| Answering | One answer per video, after full prefill | **Anytime answering** — partial answers every *k* frames with no re-prefill |
+| Answering | One answer per video, after full prefill | **Anytime answering** gives partial answers every *k* frames with no re-prefill |
 
 ## Repository layout
 
@@ -48,9 +48,10 @@ This is an active course project (Spring 2026, ITCS 6010/8010, UNC Charlotte). T
 | Streaming inference loop | done |
 | Synthetic benchmark + ablation infrastructure | done |
 | Unit tests (21 passing on CPU, sub-second) | done |
-| DyCoke baseline reproduction (LLaVA-OneVision-7B) | planned |
+| DyCoke baseline reproduction (LLaVA-OneVision-7B) | done (scripts + measured scaling artifacts locally; outputs gitignored) |
 | Streaming evaluation on Ego4D-QA | planned |
-| Ablations on real attention + final report | planned |
+| Course final report (written summary of approach + experiments + limitations) | done (`docs/FINAL_REPORT.md`) |
+| Ablations on real attention (Video LLM hooks + dataset numbers) | planned |
 
 ## Preliminary results (synthetic streams)
 
@@ -85,4 +86,4 @@ MIT. See [LICENSE](LICENSE).
 
 ## Author
 
-Anant Teotia ([@anantteotia](https://github.com/anantteotia)) — University of North Carolina at Charlotte.
+Anant Teotia ([@anantteotia](https://github.com/anantteotia)), University of North Carolina at Charlotte.

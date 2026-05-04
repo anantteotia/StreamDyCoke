@@ -26,7 +26,7 @@ MODEL_ID = "llava-hf/llava-onevision-qwen2-7b-ov-hf"
 FRAME_COUNTS = [2, 4, 8, 16, 32]
 PROMPT_TEXT = "Describe what is happening in this video in one sentence."
 
-# ── Load once ────────────────────────────────────────────────────────────────
+# Load once
 print(f"Loading {MODEL_ID} (int4) ...")
 bnb_cfg = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -47,7 +47,7 @@ load_time = time.time() - t0
 vram_after_load = torch.cuda.memory_allocated() / 1e9
 print(f"  load_time={load_time:.1f}s vram_after_load={vram_after_load:.2f}GB")
 
-# ── Frame generator ──────────────────────────────────────────────────────────
+# Frame generator
 def make_frames(n, seed=42):
     rng = np.random.default_rng(seed)
     base = rng.integers(0, 256, (384, 384, 3), dtype=np.uint8)
@@ -68,7 +68,7 @@ conversation = [{
 }]
 prompt = processor.apply_chat_template(conversation, add_generation_prompt=True)
 
-# ── Sweep ────────────────────────────────────────────────────────────────────
+# Sweep
 results = []
 for n in FRAME_COUNTS:
     torch.cuda.empty_cache()
@@ -129,7 +129,7 @@ for n in FRAME_COUNTS:
     torch.cuda.empty_cache()
     gc.collect()
 
-# ── Write ────────────────────────────────────────────────────────────────────
+# Write
 os.makedirs("experiments/baseline", exist_ok=True)
 out = {
     "model": MODEL_ID,
