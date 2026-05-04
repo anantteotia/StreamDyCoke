@@ -6,6 +6,8 @@ numpy>=1.24
 pytest>=7.4
 pytest-cov>=4.1
 
+# Optional: python scripts/export_report_pdf.py (pip install reportlab)
+
 # Later (uncomment when integrating with a real Video LLM):
 # transformers>=4.45
 # accelerate>=0.30
